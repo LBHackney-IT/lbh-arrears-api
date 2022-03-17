@@ -7,16 +7,38 @@ namespace ArrearsApi.V1.Factories
 {
     public static class ResponseFactory
     {
-        //TODO: Map the fields in the domain object(s) to fields in the response object(s).
-        // More information on this can be found here https://github.com/LBHackney-IT/lbh-lbh-arrears-api/wiki/Factory-object-mappings
-        public static ResponseObject ToResponse(this Entity domain)
+        public static BatchLogResponse ToResponse(this BatchLog batchLog)
         {
-            return new ResponseObject();
+            return new BatchLogResponse
+            {
+                Id = batchLog.Id,
+                Type = batchLog.Type,
+                StartTime = batchLog.StartTime,
+                EndTime = batchLog.EndTime,
+                IsSuccess = batchLog.IsSuccess
+            };
         }
 
-        public static List<ResponseObject> ToResponse(this IEnumerable<Entity> domainList)
+        public static List<BatchLogResponse> ToResponse(this IEnumerable<BatchLog> batchLogList)
         {
-            return domainList.Select(domain => domain.ToResponse()).ToList();
+            return batchLogList.Select(x => x.ToResponse()).ToList();
+        }
+
+        public static EvictionsResponse ToResponse(this Evictions evictions)
+        {
+            return new EvictionsResponse
+            {
+                Id = evictions.Id,
+                TenancyRef = evictions.TenancyRef,
+                Date = evictions.Date,
+                CreatedAt = evictions.CreatedAt,
+                UpdatedAt = evictions.UpdatedAt
+            };
+        }
+
+        public static List<EvictionsResponse> ToResponse(this IEnumerable<Evictions> evictionsList)
+        {
+            return evictionsList.Select(x => x.ToResponse()).ToList();
         }
     }
 }

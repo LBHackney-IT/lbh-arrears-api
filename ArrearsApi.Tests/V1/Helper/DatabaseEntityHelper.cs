@@ -6,16 +6,16 @@ namespace ArrearsApi.Tests.V1.Helper
 {
     public static class DatabaseEntityHelper
     {
-        public static DatabaseEntity CreateDatabaseEntity()
+        public static EvictionsEntity CreateDatabaseEntity()
         {
-            var entity = new Fixture().Create<Entity>();
+            var entity = new Fixture().Create<ArrearsApi.V1.Domain.BatchLog>();
 
             return CreateDatabaseEntityFrom(entity);
         }
 
-        public static DatabaseEntity CreateDatabaseEntityFrom(Entity entity)
+        public static EvictionsEntity CreateDatabaseEntityFrom(ArrearsApi.V1.Domain.BatchLog entity)
         {
-            return new DatabaseEntity
+            return new EvictionsEntity
             {
                 Id = entity.Id,
                 CreatedAt = entity.CreatedAt,

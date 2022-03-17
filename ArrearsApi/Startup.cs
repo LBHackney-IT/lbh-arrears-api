@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using MySQL.Data.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,13 +24,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Diagnostics.CodeAnalysis;
-using Hackney.Core.Logging;
-using Hackney.Core.Middleware.Logging;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Hackney.Core.HealthCheck;
-using Hackney.Core.Middleware.CorrelationId;
-using Hackney.Core.DynamoDb.HealthCheck;
-using Hackney.Core.DynamoDb;
+//using Hackney.Core.Logging;
+//using Hackney.Core.Middleware.Logging;
+//using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+//using Hackney.Core.HealthCheck;
+//using Hackney.Core.Middleware.CorrelationId;
+//using Hackney.Core.DynamoDb.HealthCheck;
+//using Hackney.Core.DynamoDb;
 using Hackney.Core.Middleware.Exception;
 
 namespace ArrearsApi
@@ -46,8 +47,8 @@ namespace ArrearsApi
 
         public IConfiguration Configuration { get; }
         private static List<ApiVersionDescription> _apiVersions { get; set; }
-        //TODO update the below to the name of your API
-        private const string ApiName = "Your API Name";
+     
+        private const string ApiName = "Arrears API";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -64,18 +65,18 @@ namespace ArrearsApi
 
             services.AddSingleton<IApiVersionDescriptionProvider, DefaultApiVersionDescriptionProvider>();
 
-            services.AddDynamoDbHealthCheck<DatabaseEntity>();
+            //services.AddDynamoDbHealthCheck<EvictionsEntity>();
 
             services.AddSwaggerGen(c =>
             {
-                c.AddSecurityDefinition("Token",
-                    new OpenApiSecurityScheme
-                    {
-                        In = ParameterLocation.Header,
-                        Description = "Your Hackney API Key",
-                        Name = "X-Api-Key",
-                        Type = SecuritySchemeType.ApiKey
-                    });
+                //c.AddSecurityDefinition("Token",
+                //    new OpenApiSecurityScheme
+                //    {
+                //        In = ParameterLocation.Header,
+                //        Description = "Your Hackney API Key",
+                //        Name = "X-Api-Key",
+                //        Type = SecuritySchemeType.ApiKey
+                //    });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
@@ -123,13 +124,11 @@ namespace ArrearsApi
                     c.IncludeXmlComments(xmlPath);
             });
 
-            services.ConfigureLambdaLogging(Configuration);
+            //services.ConfigureLambdaLogging(Configuration);
 
-            services.AddLogCallAspect();
+            //services.AddLogCallAspect();
 
-            ConfigureDbContext(services);
-            //TODO: For DynamoDb, remove the line above and uncomment the line below.
-            //services.ConfigureDynamoDB();
+            ConfigureDbContext(services);       
 
             RegisterGateways(services);
             RegisterUseCases(services);
@@ -137,26 +136,29 @@ namespace ArrearsApi
 
         private static void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            var connectionStringInterimSolution = Environment.GetEnvironmentVariable("CONNECTION_STRING_INTERIM_SOLUTION");
+            services.AddDbContext<InterimSolutionContext>(
+                opt => opt.UseSqlServer(connectionStringInterimSolution).AddXRayInterceptor(true));
 
-            services.AddDbContext<DatabaseContext>(
-                opt => opt.UseNpgsql(connectionString).AddXRayInterceptor(true));
+            var connectionStringIncome = Environment.GetEnvironmentVariable("CONNECTION_STRING_INCOME");
+            services.AddDbContext<IncomeContext>(
+                opt => opt.UseMySQL(connectionStringIncome).AddXRayInterceptor(true));
         }
 
 
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IExampleGateway, ExampleGateway>();
-
-            //TODO: For DynamoDb, remove the line above and uncomment the line below.
-            //services.AddScoped<IExampleDynamoGateway, DynamoDbGateway>();
+            services.AddScoped<IBatchLogGateway, BatchLogGateway>();
+            services.AddScoped<IEvictionsGateway, EvictionsGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
         {
-            services.AddScoped<IGetAllUseCase, GetAllUseCase>();
-            services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
+            services.AddScoped<IGetAllBatchLogUseCase, GetAllBatchLogUseCase>();
+            services.AddScoped<IGetAllEvictionsUseCase, GetAllEvictionsUseCase>();
+            services.AddScoped<IGetBatchLogByIdUseCase, GetBatchLogByIdUseCase>();
+            services.AddScoped<IGetEvictionsByIdUseCase, GetEvictionsByIdUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -168,9 +170,9 @@ namespace ArrearsApi
                   .AllowAnyMethod()
                   .WithExposedHeaders("x-correlation-id"));
 
-            app.UseCorrelationId();
-            app.UseLoggingScope();
-            app.UseCustomExceptionHandler(logger);
+            //app.UseCorrelationId();
+            //app.UseLoggingScope();
+            //app.UseCustomExceptionHandler(logger);
 
             if (env.IsDevelopment())
             {
@@ -205,12 +207,12 @@ namespace ArrearsApi
                 // SwaggerGen won't find controllers that are routed via this technique.
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
-                endpoints.MapHealthChecks("/api/v1/healthcheck/ping", new HealthCheckOptions()
-                {
-                    ResponseWriter = HealthCheckResponseWriter.WriteResponse
-                });
+                //endpoints.MapHealthChecks("/api/v1/healthcheck/ping", new HealthCheckOptions()
+                //{
+                //    ResponseWriter = HealthCheckResponseWriter.WriteResponse
+                //});
             });
-            app.UseLogCall();
+            //app.UseLogCall();
         }
     }
 }

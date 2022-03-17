@@ -14,22 +14,22 @@ namespace ArrearsApi.Tests.V1.UseCase
 {
     public class GetAllUseCaseTests : LogCallAspectFixture
     {
-        private Mock<IExampleGateway> _mockGateway;
-        private GetAllUseCase _classUnderTest;
+        private Mock<IBatchLogGateway> _mockGateway;
+        private GetAllBatchLogUseCase _classUnderTest;
         private Fixture _fixture;
 
         [SetUp]
         public void SetUp()
         {
-            _mockGateway = new Mock<IExampleGateway>();
-            _classUnderTest = new GetAllUseCase(_mockGateway.Object);
+            _mockGateway = new Mock<IBatchLogGateway>();
+            _classUnderTest = new GetAllBatchLogUseCase(_mockGateway.Object);
             _fixture = new Fixture();
         }
 
         [Test]
         public void GetsAllFromTheGateway()
         {
-            var stubbedEntities = _fixture.CreateMany<Entity>().ToList();
+            var stubbedEntities = _fixture.CreateMany<BatchLog>().ToList();
             _mockGateway.Setup(x => x.GetAll()).Returns(stubbedEntities);
 
             var expectedResponse = new ResponseObjectList { ResponseObjects = stubbedEntities.ToResponse() };
