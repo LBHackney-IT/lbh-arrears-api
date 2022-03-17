@@ -13,26 +13,17 @@ provider "aws" {
 }
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
-locals {
-  application_name = your application name # The name to use for your application
+locals {  
    parameter_store = "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter"
 }
 
 
-data "aws_iam_role" "ec2_container_service_role" {
-  name = "ecsServiceRole"
-}
-
-data "aws_iam_role" "ecs_task_execution_role" {
-  name = "ecsTaskExecutionRole"
-}
-
 terraform {
   backend "s3" {
-    bucket  = "terraform-state-development-apis"
+    bucket  = "terraform-state-housing-development"
     encrypt = true
     region  = "eu-west-2"
-    key     = services/YOUR API NAME/state #e.g. "services/transactions-api/state"
+    key     = services/lbh-arrears-api/state #e.g. "services/transactions-api/state"
   }
 }
 

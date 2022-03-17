@@ -8,20 +8,9 @@ provider:
     apiGateway: true
   vpc: ${self:custom.vpc.${opt:stage}}
   stage: ${opt:stage}
-  # TODO: Enable this line if DynamoDb is in use
-  #account: ${opt:account}
-  region: eu-west-2
-  apiKeys:
-    - secureAccess:
-      - api-key-${self:service}-${self:provider.stage}
-  usagePlan:
-    - secureAccess:
-        throttle:
-          burstLimit: 200
-          rateLimit: 100
+  region: eu-west-2  
 
 package:
-# TODO: Rename zipfile in build.sh and build.cmd to match this
   artifact: ./bin/release/netcoreapp3.1/lbh-arrears-api.zip
 
 functions:
@@ -30,9 +19,8 @@ functions:
     handler: ArrearsApi::ArrearsApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
-# TODO: Create ssm variables for this API's postgres mirror then rename lbh-arrears-api below to match api name
-# TODO: Remove this line if DynamoDb is being used
-      CONNECTION_STRING: Host=${ssm:/lbh-arrears-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/lbh-arrears-api/${self:provider.stage}/postgres-port};Database=lbh-arrears-api-mirror;Username=${ssm:/lbh-arrears-api/${self:provider.stage}/postgres-username};Password=${ssm:/lbh-arrears-api/${self:provider.stage}/postgres-password}
+      CONNECTION_STRING_INTERIM_SOLUTION: Data Source=${ssm:/housing-finance/${self:provider.stage}/db-host},${ssm:/housing-finance/${self:provider.stage}/db-port};Initial Catalog=${ssm:/housing-finance/${self:provider.stage}/db-database};Integrated Security=False;User Id=${ssm:/housing-finance/${self:provider.stage}/db-username};Password=${ssm:/housing-finance/${self:provider.stage}/db-password};Encrypt=False;TrustServerCertificate=False;MultipleActiveResultSets=True;
+      CONNECTION_STRING_INCOME: Server=${ssm:/housing-finance/${self:provider.stage}/mysql-host};Port=${ssm:/housing-finance/${self:provider.stage}/mysql-port};Database=${ssm:/housing-finance/${self:provider.stage}/mysql-database};Uid=${ssm:/housing-finance/${self:provider.stage}/mysql-username};Pwd=${ssm:/housing-finance/${self:provider.stage}/mysql-password};
     events:
       - http:
           path: /{proxy+}

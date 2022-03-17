@@ -4,20 +4,15 @@ services:
   lbh-arrears-api:
     image: lbh-arrears-api
     build:
-     context: .
-     dockerfile: ArrearsApi/Dockerfile
+     context: ArrearsApi/
+     dockerfile: ./Dockerfile
      args:
      - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
     ports:
       - 3000:3000
     environment:
       - CONNECTION_STRING=Host=dev-database;Port=5432;Database=testdb;Username=postgres;Password=mypassword
-# TODO: If using DynamoDb remove the line above and uncomment the section below.
-#      - DynamoDb_LocalMode=true
-#      - DynamoDb_LocalServiceUrl=http://dynamodb-database:8000
-#      - AWS_REGION=eu-west-2
-#      - AWS_ACCESS_KEY_ID=local
-#      - AWS_SECRET_ACCESS_KEY=local
+
     links:
       - dev-database
   dev-database:
@@ -40,16 +35,9 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=mypassword
       - DB_DATABASE=testdb
-# TODO: If using DynamoDb remove the line above and uncomment the section below.
-#      - DynamoDb_LocalMode=true
-#      - DynamoDb_LocalServiceUrl=http://dynamodb-database:8000
-#      - AWS_REGION=eu-west-2
-#      - AWS_ACCESS_KEY_ID=local
-#      - AWS_SECRET_ACCESS_KEY=local
+
     links:
       - test-database
-# TODO: If using DynamoDb remove the line above and uncomment the line below.
-#      - dynamodb-database
 
   test-database:
     image: test-database
@@ -61,8 +49,3 @@ services:
     env_file:
       - database.env
 
-# TODO: If using DynamoDb remove the 'test-database' section above and uncomment the lines below.
-#  dynamodb-database:
-#    image: amazon/dynamodb-local
-#    ports:
-#      - 8000:8000
