@@ -7,7 +7,7 @@ using ArrearsApi.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArrearsApi.V1.Gateways
-{   
+{
     public class EvictionsGateway : IEvictionsGateway
     {
         private readonly IncomeContext _databaseContext;

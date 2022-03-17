@@ -6,7 +6,7 @@ using Hackney.Core.Logging;
 using System.Threading.Tasks;
 
 namespace ArrearsApi.V1.UseCase
-{   
+{
     public class GetEvictionsByIdUseCase : IGetEvictionsByIdUseCase
     {
         private IEvictionsGateway _gateway;

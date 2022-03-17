@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ArrearsApi.V1.Infrastructure
-{ 
+{
     [Table("evictions")]
     public class EvictionsEntity
     {

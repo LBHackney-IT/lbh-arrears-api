@@ -6,7 +6,7 @@ using Hackney.Core.Logging;
 using System.Threading.Tasks;
 
 namespace ArrearsApi.V1.UseCase
-{   
+{
     public class GetBatchLogByIdUseCase : IGetBatchLogByIdUseCase
     {
         private IBatchLogGateway _gateway;
@@ -14,7 +14,7 @@ namespace ArrearsApi.V1.UseCase
         {
             _gateway = gateway;
         }
-        
+
         public async Task<BatchLogResponse> ExecuteAsync(long id)
         {
             var batchLog = await _gateway.GetEntityByIdAsync(id).ConfigureAwait(false);

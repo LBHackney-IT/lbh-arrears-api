@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ArrearsApi.V1.UseCase
-{   
+{
     public class GetAllEvictionsUseCase : IGetAllEvictionsUseCase
     {
         private readonly IEvictionsGateway _gateway;
@@ -15,7 +15,7 @@ namespace ArrearsApi.V1.UseCase
         {
             _gateway = gateway;
         }
-       
+
         public async Task<List<EvictionsResponse>> ExecuteAsync()
         {
             var evictions = await _gateway.GetAllAsync().ConfigureAwait(false);

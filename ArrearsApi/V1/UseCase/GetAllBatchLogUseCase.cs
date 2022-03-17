@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ArrearsApi.V1.UseCase
-{   
+{
     public class GetAllBatchLogUseCase : IGetAllBatchLogUseCase
     {
         private readonly IBatchLogGateway _gateway;
@@ -15,7 +15,7 @@ namespace ArrearsApi.V1.UseCase
         {
             _gateway = gateway;
         }
-       
+
         public async Task<List<BatchLogResponse>> ExecuteAsync()
         {
             var batchLog = await _gateway.GetAllAsync().ConfigureAwait(false);

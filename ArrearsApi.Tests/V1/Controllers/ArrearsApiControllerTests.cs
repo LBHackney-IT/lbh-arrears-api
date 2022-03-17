@@ -9,17 +9,17 @@ namespace ArrearsApi.Tests.V1.Controllers
     [TestFixture]
     public class ArrearsApiControllerTests : LogCallAspectFixture
     {
-        private TestController _classUnderTest;
-        private Mock<IGetBatchLogByIdUseCase> _mockGetByIdUseCase;
-        private Mock<IGetAllBatchLogUseCase> _mockGetByAllUseCase;
+        //private TestController _classUnderTest;
+        //private Mock<IGetBatchLogByIdUseCase> _mockGetByIdUseCase;
+        //private Mock<IGetAllBatchLogUseCase> _mockGetByAllUseCase;
 
-        [SetUp]
-        public void SetUp()
-        {
-            _mockGetByIdUseCase = new Mock<IGetBatchLogByIdUseCase>();
-            _mockGetByAllUseCase = new Mock<IGetAllBatchLogUseCase>();
-            _classUnderTest = new TestController(_mockGetByAllUseCase.Object, _mockGetByIdUseCase.Object);
-        }
+        //[SetUp]
+        //public void SetUp()
+        //{
+        //    _mockGetByIdUseCase = new Mock<IGetBatchLogByIdUseCase>();
+        //    _mockGetByAllUseCase = new Mock<IGetAllBatchLogUseCase>();
+        //    _classUnderTest = new TestController(_mockGetByAllUseCase.Object, _mockGetByIdUseCase.Object);
+        //}
 
 
         //Add Tests Here

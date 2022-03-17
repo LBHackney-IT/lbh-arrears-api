@@ -47,7 +47,7 @@ namespace ArrearsApi
 
         public IConfiguration Configuration { get; }
         private static List<ApiVersionDescription> _apiVersions { get; set; }
-     
+
         private const string ApiName = "Arrears API";
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -128,7 +128,7 @@ namespace ArrearsApi
 
             //services.AddLogCallAspect();
 
-            ConfigureDbContext(services);       
+            ConfigureDbContext(services);
 
             RegisterGateways(services);
             RegisterUseCases(services);

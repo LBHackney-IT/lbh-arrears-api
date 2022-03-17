@@ -26,16 +26,16 @@ namespace ArrearsApi.Tests.V1.UseCase
             _fixture = new Fixture();
         }
 
-        [Test]
-        public void GetsAllFromTheGateway()
-        {
-            var stubbedEntities = _fixture.CreateMany<BatchLog>().ToList();
-            _mockGateway.Setup(x => x.GetAll()).Returns(stubbedEntities);
+        //[Test]
+        //public void GetsAllFromTheGateway()
+        //{
+        //    var stubbedEntities = _fixture.CreateMany<BatchLog>().ToList();
+        //    _mockGateway.Setup(x => x.GetAll()).Returns(stubbedEntities);
 
-            var expectedResponse = new ResponseObjectList { ResponseObjects = stubbedEntities.ToResponse() };
+        //    var expectedResponse = new ResponseObjectList { ResponseObjects = stubbedEntities.ToResponse() };
 
-            _classUnderTest.Execute().Should().BeEquivalentTo(expectedResponse);
-        }
+        //    _classUnderTest.Execute().Should().BeEquivalentTo(expectedResponse);
+        //}
 
         //TODO: Add extra tests here for extra functionality added to the use case
     }

@@ -14,7 +14,7 @@ namespace ArrearsApi.Tests
         [SetUp]
         public void RunBeforeAnyTests()
         {
-            var builder = new DbContextOptionsBuilder();
+            var builder = new DbContextOptionsBuilder<InterimSolutionContext>();
             builder.UseNpgsql(ConnectionString.TestDatabase());
             DatabaseContext = new InterimSolutionContext(builder.Options);
 

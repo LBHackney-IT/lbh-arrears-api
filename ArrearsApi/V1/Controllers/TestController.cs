@@ -15,7 +15,7 @@ namespace ArrearsApi.V1.Controllers
     [Route("api/v1/test")]
     [Produces("application/json")]
     [ApiVersion("1.0")]
-    
+
     public class TestController : BaseController
     {
         private readonly IGetAllBatchLogUseCase _getAllBatchLogUseCase;
@@ -95,9 +95,9 @@ namespace ArrearsApi.V1.Controllers
         [Route("batchlog/{id}")]
         public async Task<IActionResult> GetBatchLogByIdAsync([FromRoute] long id)
         {
-            if (id == 0)           
+            if (id == 0)
                 return BadRequest(new BaseErrorResponse((int) HttpStatusCode.BadRequest, "The id cannot be 0!"));
-            
+
             var batchLog = await _getBatchLogByIdUseCase.ExecuteAsync(id).ConfigureAwait(false);
 
             if (batchLog == null)

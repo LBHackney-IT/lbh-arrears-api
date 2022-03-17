@@ -8,7 +8,7 @@ namespace ArrearsApi.V1.Factories
     public static class EntityFactory
     {
         public static BatchLog ToDomain(this BatchLogEntity batchLogEntity)
-        {  
+        {
             return new BatchLog
             {
                 Id = batchLogEntity.Id,

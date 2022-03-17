@@ -15,7 +15,7 @@ namespace ArrearsApi.Tests
         private MockWebApplicationFactory<TStartup> _factory;
         private NpgsqlConnection _connection;
         private IDbContextTransaction _transaction;
-        private DbContextOptionsBuilder _builder;
+        private DbContextOptionsBuilder<InterimSolutionContext> _builder;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -26,7 +26,7 @@ namespace ArrearsApi.Tests
             npgsqlCommand.CommandText = "SET deadlock_timeout TO 30";
             npgsqlCommand.ExecuteNonQuery();
 
-            _builder = new DbContextOptionsBuilder();
+            _builder = new DbContextOptionsBuilder<InterimSolutionContext>();
             _builder.UseNpgsql(_connection);
 
         }
